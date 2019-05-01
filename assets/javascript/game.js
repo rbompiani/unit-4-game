@@ -13,21 +13,30 @@ function character (name, health, attack, counter){
     }
 }
 
+//create character holders to populate
+var char1;
+var char2;
+var char3;
+var char4;
+
+
+
+
 //on game start...
 function startGame(){
 
     console.log("start game is working");
 
     //initialize characters - set to variables
-    var char1 = new character("Character1",100, 20, 30);
-    var char2 = new character("Character2",200, 20, 30);
-    var char3 = new character("Character3",180, 20, 30);
-    var char4 = new character("Character1",130, 20, 30);
+    char0 = new character("Character0",100, 20, 30);
+    char1 = new character("Character1",200, 20, 30);
+    char2 = new character("Character2",180, 20, 30);
+    char3 = new character("Character3",130, 20, 30);
 
     console.log(char1);
 
     //create array of characters
-    var characters = [char1, char2, char3, char4];
+    var characters = [char0, char1, char2, char3];
 
     //get the character field div from document
     var charField = document.getElementById("charField");
@@ -37,7 +46,10 @@ function startGame(){
 
         //create a div to hold the character info
         var charHolder = document.createElement("DIV");
+        //set class name to character holder
         charHolder.className = "charHolder";
+        //set id of holder to character variable
+        charHolder.id = "char"+charIdx;
 
         //create inner parts for charHolder
         //access character name
@@ -70,7 +82,11 @@ function startGame(){
 
         //append character holder to character field
         charField.appendChild(charHolder);
-
-
     }
 }
+
+$(document).ready(function(){
+    $(".charHolder").on("click", function(){
+        alert(this.id);
+    });      
+});
