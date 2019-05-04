@@ -1,13 +1,41 @@
+/*OVERALL STYLING*/
+body {
+    font-family: sans-serif;
+}
+
+#hero {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+}
+
+#vs {
+    display: inline-block;
+    font-size: 30px;
+    height: 200px;
+}
+
+#enemy {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+}
+
 /*CHARACTER OBJECT STYLING*/
 
 /*holder of all characters*/
 #charField {
-
+    border: 2px solid black;
 }
 
 /*character container*/
 .charHolder {
-
+    border: 2px solid black;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    margin: 0px 20px 20px 0px;
+    padding: 10px;
 }
 
 /*character name header*/
@@ -21,6 +49,20 @@
 }
 
 /*character health*/
-.charHealth{
-    
+.health{
+
+}
+
+.attack{
+    visibility: hidden;
+}
+
+/*HERO OBJECT STYLING*/
+.hero {
+    border: 2px solid green;
+}
+
+/*ENEMY OBJECT STYLING*/
+.enemy {
+    border: 2px solid red;
 }
