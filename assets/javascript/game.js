@@ -39,13 +39,26 @@ $(document).ready(function(){
     var enemyArena = $("#enemy");
     var matchupArena = $("#matchup");
 
-    
+    //initialize characters - set to variables
+    char0 = new character("Batman",100, 25, 30);
+    char1 = new character("Joker",200, 10, 20);
+    char2 = new character("Catwoman",180, 12, 25);
+    char3 = new character("Riddler",130, 18, 35);   
 
+    //create array of characters
+    var characters = [char0, char1, char2, char3];
+
+    $("#attack").on("click", attack);
+    $("#restart").on("click", startGame);
 
     //on game start...
     function startGame(){
 
         console.log("start game is working");
+
+        $("#enemy").empty();
+        $("#hero").empty();
+        $("#charField").empty();
 
         //unset fighter and defender
         hero=false;
@@ -53,15 +66,7 @@ $(document).ready(function(){
 
         //hide attack button
         $("#attack").hide();
-
-        //initialize characters - set to variables
-        char0 = new character("Character0",100, 20, 30);
-        char1 = new character("Character1",200, 20, 30);
-        char2 = new character("Character2",180, 20, 30);
-        char3 = new character("Character3",130, 20, 30);
-
-        //create array of characters
-        var characters = [char0, char1, char2, char3];
+        $("#restart").hide();
 
         //get the character field div from document
         var charField = document.getElementById("charField");
@@ -107,52 +112,89 @@ $(document).ready(function(){
             //append health to characetr holder
             charHolder.appendChild(charHealth);
 
-            //create hidden attack
+            //create hidden attack and counter
             var charAttack = document.createElement("DIV");
             charAttack.innerHTML = characters[charIdx].attack;
             charAttack.className = "attack";
             charHolder.appendChild(charAttack);
+            var charCounter = document.createElement("DIV");
+            charCounter.innerHTML = characters[charIdx].counter;
+            charCounter.className = "counter";
+            charHolder.appendChild(charCounter);
 
             //append character holder to character field
             charField.appendChild(charHolder);
         }
 
         $("#instruction").html("Select Your Hero!");
+        $(".charHolder").on("click", selectChars);
+
     }
 
     //SET ALL ATTACK FUNCTIONALITY HERE
     function attack(){
+        firstStrike();
+        setTimeout(function(){
+            if (enemyHealth>0){
+                counter();
+            }
+        }, 100);
+
+        setTimeout(function(){
+            if (heroHealth<=0){
+                $("#instruction").html("You lose!  Better luck next time");
+                $("#attack").hide();
+                $("#restart").show();
+            }
+       }, 200);
+
+       setTimeout(function(){
+            if (enemyHealth<=0){
+                if($(characterArena).children().length>0){
+
+                    $("#instruction").html("You won!  Select another enemy!");
+                    $(".enemy").remove();
+                    enemy = false;
+                    $("#attack").hide();
+                } else {
+                    $("#instruction").html("You win the game!!");
+                    $(".enemy").remove();
+                    $("#attack").hide();
+                    $("#restart").show();
+                }
+            }
+        }, 300);
+
+    }
+
+    function firstStrike(){
         //use hero attack to decrement enemy health
         enemyHealth -= heroAttack;
         //alert your attack
-        alert("you attacked for " +heroAttack);
+        $("#instruction").html("You attacked for "+ heroAttack + " points!");
 
         //set enemy health in html to equal new health
         $("#enemy").find(".health").text(enemyHealth);
         //increase attack by base attack
         heroAttack += heroBaseAttack;
-        
-        // if enemy health > 0, fight again, else you won!
-        if (enemyHealth>0){
+    }
+    
+    function counter(){
             //counterattack
             heroHealth -= enemyCounter;
-            //alert the counter
-            alert("they countered for "+ enemyCounter);
 
             //set your health in html equal to new health
-            $("#hero").find(".health").text(heroHealth);            
-        } else {
-            alert("YOU WIN! SELECT ANOTHER");
-        }
-
-
-
+            $("#hero").find(".health").text(heroHealth);
     }
+
+
+
+
 
     startGame();
 
     //MOVE DIVS TO FIGHTER AND EMENMY
-    $(".charHolder").on("click", function(){
+    function selectChars(){
         //if no fighter is chosen...
         if(!hero){
             //add fighter class to current div
@@ -165,7 +207,7 @@ $(document).ready(function(){
             //set hero health variable
             heroHealth=parseInt($(this).find(".health").text());
             //set hero attack
-            heroAttack=parseInt($(this).children().last().text());
+            heroAttack=parseInt($(this).find(".attack").text());
             heroBaseAttack = heroAttack;
 
             //detach old on click
@@ -183,10 +225,10 @@ $(document).ready(function(){
             enemy=true;
             currentEnemy = this.id;
 
-            //set hero health variable
+            //set enemy health variable
             enemyHealth=parseInt($(this).find(".health").text());
-            //set hero attack
-            enemyCounter=parseInt($(this).children().last().text());
+            //set enemy attack
+            enemyCounter=parseInt($(this).find(".counter").text());
 
             //detach old on click
             $(this).off("click");
@@ -197,11 +239,11 @@ $(document).ready(function(){
             //show the attack button
             $("#attack").show();
 
-            $("#attack").on("click", attack);
+
 
         }  else {
             $("#instruction").html("Defeat the Enemy Before Selecting a New One - FIGHT!");     
         }        
-    });    
+    };    
  
 });

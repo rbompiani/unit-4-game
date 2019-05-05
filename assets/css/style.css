@@ -13,6 +13,7 @@ body {
     display: inline-block;
     font-size: 30px;
     height: 200px;
+    padding-right: 20px;
 }
 
 #enemy {
@@ -25,15 +26,11 @@ body {
 
 /*holder of all characters*/
 #charField {
-    border: 2px solid black;
 }
 
 /*character container*/
 .charHolder {
-    border: 2px solid black;
     display: inline-block;
-    width: 150px;
-    height: 150px;
     margin: 0px 20px 20px 0px;
     padding: 10px;
 }
@@ -45,7 +42,8 @@ body {
 
 /*character image*/
 .charImg {
-
+    width: 150px;
+    height: 220px;
 }
 
 /*character health*/
@@ -55,6 +53,12 @@ body {
 
 .attack{
     visibility: hidden;
+    height: 1px;
+}
+
+.counter{
+    visibility: hidden;
+    height: 1px;
 }
 
 /*HERO OBJECT STYLING*/
